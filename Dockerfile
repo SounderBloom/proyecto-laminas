@@ -1,15 +1,21 @@
 FROM php:8.2-apache
 
-# Habilitar rewrite (necesario para Laminas)
-RUN a2enmod rewrite
+# 🔥 BORRAR cualquier MPM extra de raíz
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
+          /etc/apache2/mods-enabled/mpm_worker.load \
+          /etc/apache2/mods-enabled/mpm_event.conf \
+          /etc/apache2/mods-enabled/mpm_worker.conf
 
-# Copiar el proyecto
+# Asegurar prefork
+RUN a2enmod mpm_prefork rewrite
+
+# Copiar proyecto
 COPY . /var/www/html
 
-# Apuntar Apache a /public
+# DocumentRoot a Laminas
 RUN sed -i 's|/var/www/html|/var/www/html/app/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Permitir .htaccess (IMPORTANTE)
+# Permitir .htaccess
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Permisos
