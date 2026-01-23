@@ -1,10 +1,11 @@
 FROM php:8.3-apache
 
-LABEL maintainer="getlaminas.org"
+# 🔥 LIMPIAR MPMs CONFLICTIVOS (ESTO ES LA CLAVE)
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
+          /etc/apache2/mods-enabled/mpm_worker.*
 
-# Asegurar solo un MPM (evita crash)
-RUN a2dismod mpm_event mpm_worker \
- && a2enmod mpm_prefork
+# Asegurar prefork
+RUN a2enmod mpm_prefork
 
 # Dependencias del sistema
 RUN apt-get update && apt-get install -y \
@@ -16,16 +17,16 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && docker-php-ext-install zip intl pdo_pgsql
 
-# Activar mod_rewrite
+# Apache mods
 RUN a2enmod rewrite
 
-# Apache → apuntar a Laminas public
+# Apache → Laminas public
 RUN sed -i 's!/var/www/html!/var/www/app/public!g' /etc/apache2/sites-available/000-default.conf
 
-# Permitir .htaccess (CRÍTICO para Laminas)
+# Permitir .htaccess
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Instalar Composer
+# Composer
 RUN curl -sS https://getcomposer.org/installer \
     | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -34,7 +35,7 @@ WORKDIR /var/www
 # Copiar proyecto
 COPY . /var/www
 
-# Instalar dependencias PHP
+# Instalar dependencias
 RUN composer install --no-dev --optimize-autoloader
 
 # Railway
