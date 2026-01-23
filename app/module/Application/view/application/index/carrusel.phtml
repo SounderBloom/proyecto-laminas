@@ -1,0 +1,71 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<style>
+.carousel-item > img {
+    height: 500px;
+    object-fit: cover;
+}
+</style>
+
+<div class="container" style="height: 100vh; background-color: rgb(240,240,240)">
+  <div class="ms-5 p-5">
+    <a href="<?= $this->url('application', ['action' => 'index']) ?>" class="btn btn-dark p-2"><-</a>
+    <span class="title mt-5 text-center fs-2 ms-3">Carrusel</span>
+  </div>
+
+  <form method="post"
+      enctype="multipart/form-data"
+      action="<?= $this->url('application', ['action' => 'carrusel']) ?>"
+      class="text-center mb-5">
+
+      <label class="btn btn-dark p-4">
+          Agregar Imagen
+          <input type="file" name="imagen" accept="image/*" hidden>
+      </label>
+
+      <button class="btn btn-success ms-3 p-4">Subir</button>
+  </form>
+
+
+<?php if (!empty($imagenes)): ?>
+<div id="carouselExampleIndicators" class="carousel slide">
+    
+    <!-- indicadores -->
+    <div class="carousel-indicators">
+        <?php foreach ($imagenes as $i => $img): ?>
+            <button type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="<?= $i ?>"
+                    class="<?= $i === 0 ? 'active' : '' ?>">
+            </button>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- slides -->
+    <div class="carousel-inner">
+        <?php foreach ($imagenes as $i => $img): ?>
+            <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
+                <img src="/uploads/carrusel/<?= $img ?>"
+                     class="d-block w-100">
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <button class="carousel-control-prev" type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+
+    <button class="carousel-control-next" type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+<?php else: ?>
+    <p class="text-center">No hay imágenes aún</p>
+<?php endif; ?>

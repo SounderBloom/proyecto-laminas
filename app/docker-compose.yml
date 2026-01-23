@@ -1,0 +1,25 @@
+services:
+  laminas:
+    build: .
+    container_name: laminas_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: laminas_postgres
+    environment:
+      POSTGRES_DB: laminas_db
+      POSTGRES_USER: laminas
+      POSTGRES_PASSWORD: laminas
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "laminas/laminas-captcha": "^2.5"
+    }
+}

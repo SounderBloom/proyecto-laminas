@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: laminas_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    container_name: laminas_db
+    environment:
+      POSTGRES_DB: laminas
+      POSTGRES_USER: laminas
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
