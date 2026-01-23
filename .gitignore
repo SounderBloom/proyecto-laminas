@@ -1,0 +1,27 @@
+# Composer
+/vendor/
+
+# Laminas (cache, logs, sesiones)
+/app/data/cache/
+/app/data/logs/
+/app/data/session/
+
+# Archivos de entorno
+.env
+.env.*
+!.env.example
+
+# IDEs / editores
+.idea/
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Node (por si luego usas assets)
+node_modules/
+
+# Archivos temporales
+*.log
+*.tmp
