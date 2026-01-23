@@ -2,6 +2,10 @@ FROM php:8.3-apache
 
 LABEL maintainer="getlaminas.org"
 
+# Asegurar solo un MPM (evita crash)
+RUN a2dismod mpm_event mpm_worker \
+ && a2enmod mpm_prefork
+
 # Dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
@@ -27,13 +31,13 @@ RUN curl -sS https://getcomposer.org/installer \
 
 WORKDIR /var/www
 
-# Copiar proyecto completo
+# Copiar proyecto
 COPY . /var/www
 
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Railway usa PORT dinámico
+# Railway
 ENV PORT=8080
 EXPOSE 8080
 
