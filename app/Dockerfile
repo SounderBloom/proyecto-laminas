@@ -76,3 +76,9 @@ RUN apt-get install --yes libicu-dev \
 
 
 WORKDIR /var/www
+
+# Copiar proyecto
+COPY . /var/www
+
+# Instalar dependencias
+RUN composer install --no-dev --optimize-autoloader
