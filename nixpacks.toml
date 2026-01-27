@@ -1,0 +1,14 @@
+
+- El script **install-php-extensions** es súper popular y lo usa mucha gente en Railway para agregar extensiones rápido. Railway lo soporta porque es Nix-based.
+
+### Pasos
+1. Agrega uno de esos nixpacks.toml  
+2. Commit y push al repo  
+3. Railway redeploy (o fuerza rebuild en el dashboard)  
+4. Verifica después con un phpinfo() temporal o corre este código en algún controller:
+
+```php
+<?php
+phpinfo(); die;
+// o más simple:
+echo extension_loaded('pdo_pgsql') ? 'Sí está!' : 'No está :(';
