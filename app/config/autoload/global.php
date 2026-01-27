@@ -14,13 +14,6 @@
 return [
     'db' => [
         'driver' => 'Pdo',
-        'dsn' => sprintf(
-            'pgsql:host=%s;port=%s;dbname=%s',
-            getenv('PGHOST'),
-            getenv('PGPORT'),
-            getenv('PGDATABASE')
-        ),
-        'username' => getenv('PGUSER'),
-        'password' => getenv('PGPASSWORD'),
+        'dsn'    => getenv('DATABASE_URL'),
     ],
 ];
