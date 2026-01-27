@@ -13,11 +13,10 @@
  */
 return [
     'db' => [
-        'driver'   => 'Pdo_Pgsql',
-        'hostname' => getenv('PGHOST'),
-        'port'     => getenv('PGPORT'),
-        'database' => getenv('PGDATABASE'),
-        'username' => getenv('PGUSER'),
-        'password' => getenv('PGPASSWORD'),
+        'driver' => 'Pdo_Pgsql',
+        'dsn'    => getenv('DATABASE_URL'),  // ← esto es lo clave
+        // Opcional: si quieres fallback manual
+        // 'hostname' => getenv('PGHOST') ?: 'localhost',
+        // etc.
     ],
 ];
