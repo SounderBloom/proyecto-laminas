@@ -12,23 +12,11 @@
  * file.
  */
 return [
-    /*'db' => [
-        'driver'         => 'Pdo',
-        'dsn'            => 'pgsql:host=laminas_db;port=5432;dbname=laminas',
-        'username'       => 'laminas',
-        'password'       => 'secret',
-        'driver_options' => [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        ],
-    ],*/
     'db' => [
-        'driver'   => 'Pdo',
-        'dsn'      => sprintf(
-            'pgsql:host=%s;port=%s;dbname=%s',
-            getenv('PGHOST'),
-            getenv('PGPORT'),
-            getenv('PGDATABASE')
-        ),
+        'driver'   => 'Pdo_Pgsql',
+        'hostname' => getenv('PGHOST'),
+        'port'     => getenv('PGPORT'),
+        'database' => getenv('PGDATABASE'),
         'username' => getenv('PGUSER'),
         'password' => getenv('PGPASSWORD'),
     ],
