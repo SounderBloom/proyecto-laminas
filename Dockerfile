@@ -1,14 +1,30 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y nginx \
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    nginx \
+    git \
+    unzip \
+    libzip-dev \
+ && docker-php-ext-install zip \
  && rm -rf /var/lib/apt/lists/*
 
-ENV PORT=8080
+# Instalar Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Copiar el proyecto
 COPY . /var/www/html
-COPY nginx.conf /etc/nginx/nginx.conf
 
+WORKDIR /var/www/html/app
+
+# Instalar dependencias de Laminas
+RUN composer install --no-dev --optimize-autoloader
+
+# Configurar permisos
 RUN chown -R www-data:www-data /var/www/html
+
+# Copiar configuración de nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8080
 
