@@ -14,6 +14,11 @@
 return [
     'db' => [
         'driver' => 'Pdo',
-        'dsn'    => getenv('DATABASE_URL'),
+        'dsn' => 'pgsql:host=' . getenv('PGHOST')
+            . ';port=' . getenv('PGPORT')
+            . ';dbname=' . getenv('PGDATABASE'),
+        'username' => getenv('PGUSER'),
+        'password' => getenv('PGPASSWORD'),
     ],
+
 ];
