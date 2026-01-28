@@ -8,6 +8,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class IndexController extends AbstractActionController
 {
