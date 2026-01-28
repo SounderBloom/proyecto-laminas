@@ -89,6 +89,7 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
     .then(response => {
         if (!response.ok) {
             throw new Error('Error al eliminar las imágenes');
+            console.log(response);
         }
         return response.json();
     })
