@@ -121,7 +121,7 @@ class IndexController extends AbstractActionController
         if (! $request->isPost()) {
             return new JsonResponse([
                 'success' => false,
-                'message' => 'Método no permitido'
+                'message' => 'Método no permitido. Usa POST.'
             ], 405);
         }
 
@@ -130,7 +130,7 @@ class IndexController extends AbstractActionController
         if ($uploadsPath === false || !is_dir($uploadsPath)) {
             return new JsonResponse([
                 'success' => false,
-                'message' => 'La carpeta uploads no existe'
+                'message' => 'La carpeta de uploads/carrusel no existe o no se puede acceder.'
             ], 500);
         }
 
@@ -138,17 +138,17 @@ class IndexController extends AbstractActionController
         $deletedCount = 0;
 
         foreach ($files as $file) {
-            if (is_file($file)) {
-                if (unlink($file)) {
-                    $deletedCount++;
-                }
+            if (is_file($file) && unlink($file)) {
+                $deletedCount++;
             }
         }
 
         return new JsonResponse([
             'success' => true,
-            'message' => "Se eliminaron $deletedCount imágenes correctamente"
-        ], 200);
+            'message' => $deletedCount > 0 
+                ? "Se eliminaron $deletedCount imágenes correctamente." 
+                : "No había imágenes para eliminar."
+        ]);
     }
 
 }

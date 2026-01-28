@@ -90,9 +90,9 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
     })
     .then(response => {
         if (!response.ok) {
-            // Intenta leer JSON incluso en error
-            return response.json().then(errData => {
-                throw new Error(errData.message || `Error ${response.status}`);
+            return response.text().then(text => {  // Cambia a text() primero para debug
+                console.log('Respuesta no OK:', response.status, text);
+                throw new Error(`Error ${response.status}: ${text}`);
             });
         }
         return response.json();
