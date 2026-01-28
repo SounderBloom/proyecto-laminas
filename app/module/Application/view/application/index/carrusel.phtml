@@ -80,16 +80,20 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
         return;
     }
 
-    fetch('<?= $this->url('application', ['action' => 'eliminarImagenes']) ?>', {
+    fetch('<?= $this->url('application', ['action' => 'eliminar-imagenes']) ?>', {  // nota: usa kebab-case si tu ruta es así
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'  // opcional, pero ayuda
         },
+        // body: JSON.stringify({})  // no necesitas body si no envías datos
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Error al eliminar las imágenes');
-            console.log(response.json());
+            // Intenta leer JSON incluso en error
+            return response.json().then(errData => {
+                throw new Error(errData.message || `Error ${response.status}`);
+            });
         }
         return response.json();
     })
@@ -98,8 +102,8 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
         location.reload();
     })
     .catch(error => {
-        console.error(error);
-        alert('Ocurrió un error al eliminar las imágenes');
+        console.error('Error:', error);
+        alert('Ocurrió un error: ' + error.message);
     });
 });
 </script>

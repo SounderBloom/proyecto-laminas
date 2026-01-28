@@ -118,30 +118,36 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
 
         if (! $request->isPost()) {
-            return $this->getResponse()->setStatusCode(405);
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'Método no permitido'
+            ], 405);
         }
 
         $uploadsPath = realpath(__DIR__ . '/../../../public/uploads/carrusel');
 
         if ($uploadsPath === false || !is_dir($uploadsPath)) {
-            return $this->jsonResponse([
+            return new JsonResponse([
                 'success' => false,
                 'message' => 'La carpeta uploads no existe'
             ], 500);
         }
 
         $files = glob($uploadsPath . '/*');
+        $deletedCount = 0;
 
         foreach ($files as $file) {
             if (is_file($file)) {
-                unlink($file);
+                if (unlink($file)) {
+                    $deletedCount++;
+                }
             }
         }
 
-        return $this->jsonResponse([
+        return new JsonResponse([
             'success' => true,
-            'message' => 'Todas las imágenes fueron eliminadas correctamente'
-        ]);
+            'message' => "Se eliminaron $deletedCount imágenes correctamente"
+        ], 200);
     }
 
 }
