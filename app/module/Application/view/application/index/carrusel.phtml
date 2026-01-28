@@ -22,8 +22,8 @@
       class="text-center mb-3">
 
       <label class="btn btn-dark p-4">
-          Agregar Imagen
-          <input type="file" name="imagen" accept="image/*" hidden>
+          <span id="lbl_agregar_imagen">Agregar Imagen</span>
+          <input type="file" name="imagen" accept="image/*" hidden id="input_agregar_imagen">
       </label>
 
       <button class="btn btn-success ms-3 p-4">Subir</button>
@@ -77,35 +77,39 @@
 
 
 <script>
-document.getElementById('btnEliminarImagenes').addEventListener('click', function () {
-    if (!confirm('¿Seguro que deseas eliminar todas las imágenes?')) {
-        return;
-    }
-
-    fetch('<?= $this->url('application', ['action' => 'eliminar-imagenes']) ?>', {  // nota: usa kebab-case si tu ruta es así
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'  // opcional, pero ayuda
-        },
-        // body: JSON.stringify({})  // no necesitas body si no envías datos
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => {  // Cambia a text() primero para debug
-                console.log('Respuesta no OK:', response.status, text);
-                throw new Error(`Error ${response.status}: ${text}`);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert(data.message);
-        location.reload();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Ocurrió un error: ' + error.message);
+    document.getElementById('input_agregar_imagen').addEventListener('change', ()=>{
+        document.getElementById('lbl_agregar_imagen').innerHTML = document.getElementById('input_agregar_imagen').files[0].name;
     });
-});
+
+    document.getElementById('btnEliminarImagenes').addEventListener('click', function () {
+        if (!confirm('¿Seguro que deseas eliminar todas las imágenes?')) {
+            return;
+        }
+
+        fetch('<?= $this->url('application', ['action' => 'eliminar-imagenes']) ?>', {  // nota: usa kebab-case si tu ruta es así
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'  // opcional, pero ayuda
+            },
+            // body: JSON.stringify({})  // no necesitas body si no envías datos
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {  // Cambia a text() primero para debug
+                    console.log('Respuesta no OK:', response.status, text);
+                    throw new Error(`Error ${response.status}: ${text}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocurrió un error: ' + error.message);
+        });
+    });
 </script>
