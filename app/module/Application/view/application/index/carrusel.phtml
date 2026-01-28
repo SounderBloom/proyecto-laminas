@@ -29,6 +29,9 @@
       <button class="btn btn-success ms-3 p-4">Subir</button>
   </form>
 
+    <button id="btnEliminarImagenes" class="btn btn-danger">
+        Eliminar todas las imágenes
+    </button>
 
 <?php if (!empty($imagenes)): ?>
 <div id="carouselExampleIndicators" class="carousel slide">
@@ -69,3 +72,33 @@
 <?php else: ?>
     <p class="text-center">No hay imágenes aún</p>
 <?php endif; ?>
+
+
+<script>
+document.getElementById('btnEliminarImagenes').addEventListener('click', function () {
+    if (!confirm('¿Seguro que deseas eliminar todas las imágenes?')) {
+        return;
+    }
+
+    fetch('<?= $this->url("eliminar-imagenes") ?>', {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al eliminar las imágenes');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        location.reload();
+    })
+    .catch(error => {
+        console.error(error);
+        alert('Ocurrió un error al eliminar las imágenes');
+    });
+});
+</script>

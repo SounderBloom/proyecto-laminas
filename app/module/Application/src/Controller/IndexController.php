@@ -112,4 +112,36 @@ class IndexController extends AbstractActionController
             'action' => 'base-datos'
         ]);
     }
+
+    public function eliminarImagenesAction()
+    {
+        $request = $this->getRequest();
+
+        if (! $request->isPost()) {
+            return $this->getResponse()->setStatusCode(405);
+        }
+
+        $uploadsPath = realpath(__DIR__ . '/../../../public/uploads');
+
+        if ($uploadsPath === false || !is_dir($uploadsPath)) {
+            return $this->jsonResponse([
+                'success' => false,
+                'message' => 'La carpeta uploads no existe'
+            ], 500);
+        }
+
+        $files = glob($uploadsPath . '/*');
+
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        return $this->jsonResponse([
+            'success' => true,
+            'message' => 'Todas las imágenes fueron eliminadas correctamente'
+        ]);
+    }
+
 }
