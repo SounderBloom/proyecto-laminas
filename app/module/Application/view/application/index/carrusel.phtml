@@ -19,7 +19,7 @@
   <form method="post"
       enctype="multipart/form-data"
       action="<?= $this->url('application', ['action' => 'carrusel']) ?>"
-      class="text-center mb-5">
+      class="text-center mb-3">
 
       <label class="btn btn-dark p-4">
           Agregar Imagen
@@ -29,9 +29,11 @@
       <button class="btn btn-success ms-3 p-4">Subir</button>
   </form>
 
+  <div class="text-center mb-4">
     <button id="btnEliminarImagenes" class="btn btn-danger">
         Eliminar todas las imágenes
     </button>
+  </div>
 
 <?php if (!empty($imagenes)): ?>
 <div id="carouselExampleIndicators" class="carousel slide">
