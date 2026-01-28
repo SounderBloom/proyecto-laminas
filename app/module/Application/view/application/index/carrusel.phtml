@@ -80,7 +80,7 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
         return;
     }
 
-    fetch('<?= $this->url("eliminar-imagenes") ?>', {
+    fetch('<?= $this->url('application', ['action' => 'eliminarImagenes']) ?>', {
         method: 'POST',
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
