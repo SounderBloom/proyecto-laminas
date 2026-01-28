@@ -127,8 +127,7 @@ class IndexController extends AbstractActionController
             $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
             return $this->getResponse();
         }
-
-        $uploadsPath = realpath(__DIR__ . '/../../../public/uploads/carrusel');
+        $uploadsPath = realpath(__DIR__ . '/../../../../public/uploads/carrusel');
 
         if ($uploadsPath === false || !is_dir($uploadsPath)) {
             $this->getResponse()->setStatusCode(500);
