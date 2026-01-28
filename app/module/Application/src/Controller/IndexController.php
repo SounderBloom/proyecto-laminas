@@ -119,19 +119,25 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
 
         if (! $request->isPost()) {
-            return new JsonResponse([
+            $this->getResponse()->setStatusCode(405);
+            $this->getResponse()->setContent(json_encode([
                 'success' => false,
                 'message' => 'Método no permitido. Usa POST.'
-            ], 405);
+            ]));
+            $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+            return $this->getResponse();
         }
 
         $uploadsPath = realpath(__DIR__ . '/../../../public/uploads/carrusel');
 
         if ($uploadsPath === false || !is_dir($uploadsPath)) {
-            return new JsonResponse([
+            $this->getResponse()->setStatusCode(500);
+            $this->getResponse()->setContent(json_encode([
                 'success' => false,
                 'message' => 'La carpeta de uploads/carrusel no existe o no se puede acceder.'
-            ], 500);
+            ]));
+            $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+            return $this->getResponse();
         }
 
         $files = glob($uploadsPath . '/*');
@@ -143,12 +149,16 @@ class IndexController extends AbstractActionController
             }
         }
 
-        return new JsonResponse([
+        $this->getResponse()->setStatusCode(200);
+        $this->getResponse()->setContent(json_encode([
             'success' => true,
             'message' => $deletedCount > 0 
                 ? "Se eliminaron $deletedCount imágenes correctamente." 
                 : "No había imágenes para eliminar."
-        ]);
+        ]));
+        $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+
+        return $this->getResponse();
     }
 
 }
