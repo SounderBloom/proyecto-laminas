@@ -1,0 +1,130 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<style>
+    .container-demo {
+        height: 100vh;
+        background-color: rgb(240,240,240);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+    }
+    .form-box {
+        background: white;
+        border-radius: 12px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        max-width: 500px;
+        width: 100%;
+    }
+    .title-demo {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: #333;
+    }
+    .back-btn {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+    }
+    .hcaptcha-wrapper {
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+    .alert-success, .alert-danger {
+        margin-top: 1.5rem;
+    }
+</style>
+
+<div class="container-demo">
+    <a href="<?= $this->url('application', ['action' => 'index']) ?>" 
+       class="btn btn-dark p-3 back-btn">
+        ← Volver
+    </a>
+
+    <div class="form-box">
+        <h2 class="title-demo">Demo hCaptcha</h2>
+
+        <form id="demoForm" method="post" action="<?= $this->url('application', ['action' => 'demo-captcha']) ?>" 
+              class="text-center">
+            
+            <div class="mb-4">
+                <input type="text" name="nombre" class="form-control form-control-lg" 
+                       placeholder="Tu nombre o comentario" required>
+            </div>
+
+            <!-- hCaptcha -->
+            <div class="hcaptcha-wrapper">
+                <div class="h-captcha" 
+                     data-sitekey="f232c5c4-f7f2-4be4-b216-7fd68590bf8e"
+                     data-callback="onCaptchaSuccess"
+                     data-expired-callback="onCaptchaExpired"
+                     data-error-callback="onCaptchaError"></div>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-lg w-100 mt-3" disabled>
+                Enviar (verificar captcha)
+            </button>
+        </form>
+        
+        <?php if (isset($success)): ?>
+            <div class="alert <?= $success ? 'alert-success' : 'alert-danger' ?> mt-4 text-center">
+                <strong><?= $success ? '¡Éxito!' : 'Error' ?></strong><br>
+                <?= $this->escapeHtml($message) ?>
+            </div>
+        <?php endif; ?>
+
+        <div id="resultado" class="mt-4"></div>
+    </div>
+</div>
+
+<!-- Script de hCaptcha -->
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
+<script>
+// Habilitar botón solo cuando el captcha está resuelto
+function onCaptchaSuccess(token) {
+    document.getElementById('btnSubmit').disabled = false;
+    console.log('Captcha resuelto, token:', token);
+}
+
+function onCaptchaExpired() {
+    document.getElementById('btnSubmit').disabled = true;
+    alert('El captcha expiró, por favor resuélvelo de nuevo.');
+}
+
+function onCaptchaError() {
+    document.getElementById('btnSubmit').disabled = true;
+    alert('Error al cargar el captcha. Intenta recargar la página.');
+}
+
+// Manejo del formulario (demo frontend)
+document.getElementById('demoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const token = hcaptcha.getResponse(); // o puedes usar el input hidden que genera hCaptcha
+
+    if (!token) {
+        alert('Por favor completa el captcha');
+        return;
+    }
+
+    // Aquí iría el fetch real al backend
+    // Por ahora simulamos éxito
+    document.getElementById('resultado').innerHTML = `
+        <div class="alert alert-success">
+            <strong>¡Éxito!</strong> Formulario enviado correctamente.<br>
+            Token hCaptcha: <small>${token.substring(0, 20)}...</small>
+        </div>
+    `;
+
+    // Opcional: resetear captcha después de enviar
+    // hcaptcha.reset();
+});
+</script>

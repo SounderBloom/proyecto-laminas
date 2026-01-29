@@ -82,6 +82,65 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    public function capchaAction()
+    {
+        $request = $this->getRequest();
+        $viewModel = new ViewModel();
+
+        // Solo procesamos cuando se envía el formulario (POST)
+        if ($request->isPost()) {
+            $postData = $request->getPost()->toArray();
+            $token = $postData['h-captcha-response'] ?? '';
+
+            $message = 'Captcha no recibido';
+            $success = false;
+
+            if ($token !== '') {
+                $secret = 'ES_2207507e4662426fba1598f67036d8b0';
+
+                // Validación simple con file_get_contents
+                $url = 'https://hcaptcha.com/siteverify';
+                $data = [
+                    'secret'   => $secret,
+                    'response' => $token,
+                ];
+
+                $options = [
+                    'http' => [
+                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($data),
+                    ],
+                ];
+
+                $context  = stream_context_create($options);
+                $result   = file_get_contents($url, false, $context);
+                $response = json_decode($result, true);
+
+                if ($response && !empty($response['success'])) {
+                    $success = true;
+                    $message = '¡Captcha válido! Puedes continuar con el formulario.';
+                    // Aquí podrías guardar datos, enviar email, etc.
+                } else {
+                    $message = 'Captcha inválido o expirado.';
+                    // Opcional: ver errores específicos
+                    // if (!empty($response['error-codes'])) {
+                    //     $message .= ' (' . implode(', ', $response['error-codes']) . ')';
+                    // }
+                }
+            }
+
+            // Pasamos los resultados a la vista para mostrar el mensaje
+            $viewModel->setVariables([
+                'success' => $success,
+                'message' => $message,
+            ]);
+        }
+
+        // Siempre mostramos la vista (con o sin mensaje)
+        return $viewModel;
+    }
+
     public function insertarEjemploAction()
     {
         $sql = new Sql($this->db);
