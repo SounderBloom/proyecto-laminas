@@ -40,17 +40,15 @@
         margin-top: 1.5rem;
     }
 </style>
-
-<div class="container-demo">
-
+<div class="m-5">
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Captcha</li>
-        </ol>
-    </nav>
-
-
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Captcha</li>
+    </ol>
+</nav>
+</div>
+<div class="container-demo">
     <a href="<?= $this->url('application', ['action' => 'index']) ?>" 
        class="btn btn-dark p-3 back-btn">
         ←
