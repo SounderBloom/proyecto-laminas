@@ -44,11 +44,11 @@
 <div class="container-demo">
     <a href="<?= $this->url('application', ['action' => 'index']) ?>" 
        class="btn btn-dark p-3 back-btn">
-        ← Volver
+        ←
     </a>
 
     <div class="form-box">
-        <h2 class="title-demo">Demo hCaptcha</h2>
+        <h2 class="title-demo">Captcha</h2>
 
         <form id="demoForm" method="post" action="<?= $this->url('application', ['action' => 'demo-captcha']) ?>" 
               class="text-center">
@@ -71,7 +71,7 @@
                 Enviar (verificar captcha)
             </button>
         </form>
-        
+
         <?php if (isset($success)): ?>
             <div class="alert <?= $success ? 'alert-success' : 'alert-danger' ?> mt-4 text-center">
                 <strong><?= $success ? '¡Éxito!' : 'Error' ?></strong><br>
@@ -120,7 +120,6 @@ document.getElementById('demoForm').addEventListener('submit', function(e) {
     document.getElementById('resultado').innerHTML = `
         <div class="alert alert-success">
             <strong>¡Éxito!</strong> Formulario enviado correctamente.<br>
-            Token hCaptcha: <small>${token.substring(0, 20)}...</small>
         </div>
     `;
 
