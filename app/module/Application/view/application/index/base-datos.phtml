@@ -6,6 +6,12 @@
 ?>
 
 <div class="container" style="min-height: 100vh; background-color: rgb(240,240,240)">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Base de Datos</li>
+        </ol>
+    </nav>
   <div class="ms-5 p-5">
     <a href="<?= $this->url('application', ['action' => 'index']) ?>" class="btn btn-dark p-2"><-</a>
     <span class="fs-2 ms-3">Base de Datos</span>

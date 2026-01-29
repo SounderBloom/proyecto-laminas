@@ -42,6 +42,15 @@
 </style>
 
 <div class="container-demo">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Captcha</li>
+        </ol>
+    </nav>
+
+
     <a href="<?= $this->url('application', ['action' => 'index']) ?>" 
        class="btn btn-dark p-3 back-btn">
         ←
@@ -55,7 +64,7 @@
             
             <div class="mb-4">
                 <input type="text" name="nombre" class="form-control form-control-lg" 
-                       placeholder="Tu nombre o comentario" required>
+                       placeholder="Escribe algo" required>
             </div>
 
             <!-- hCaptcha -->
