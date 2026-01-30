@@ -83,75 +83,76 @@
 
 
 <script>
-// Referencias a elementos
-const inputFile = document.getElementById('input_agregar_imagen');
-const labelFile = document.getElementById('lbl_agregar_imagen');
-const btnSubir   = document.querySelector('form button[type="submit"]'); // el botón Subir
-const btnEliminar = document.getElementById('btnEliminarImagenes');
+// Referencias
+const inputFile    = document.getElementById('input_agregar_imagen');
+const labelFile    = document.getElementById('lbl_agregar_imagen');
+const btnSubir     = document.querySelector('form button.btn-success'); // el botón Subir
 
 // Iniciar botón Subir deshabilitado
 btnSubir.disabled = true;
-btnSubir.style.opacity = '0.6'; // visual: se ve apagado
+btnSubir.style.opacity = '0.6';
 
-// Lista de extensiones permitidas (puedes ampliarla)
-const allowedExtensions = [
-    'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'svg'
+// Extensiones y MIME permitidos
+const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'svg'];
+const validMimeTypes    = [
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+    'image/bmp', 'image/tiff', 'image/svg+xml'
 ];
 
-// Función para validar si es imagen
 function isValidImage(file) {
     if (!file) return false;
 
-    // 1. Validación por extensión (más confiable en algunos navegadores)
-    const ext = file.name.split('.').pop().toLowerCase();
+    // Validar extensión
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
     if (allowedExtensions.includes(ext)) {
         return true;
     }
 
-    // 2. Validación extra por MIME type (más segura)
-    const validMime = [
-        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-        'image/bmp', 'image/tiff', 'image/svg+xml'
-    ];
-    return validMime.includes(file.type);
+    // Validar MIME type (más confiable)
+    return validMimeTypes.includes(file.type);
 }
 
-// Evento change del input file
+// Evento cuando se selecciona archivo
 inputFile.addEventListener('change', () => {
     const file = inputFile.files[0];
 
+    // Resetear estilos y texto por defecto si no hay archivo
     if (!file) {
         labelFile.innerHTML = 'Agregar Imagen';
+        labelFile.style.color = '';
         btnSubir.disabled = true;
         btnSubir.style.opacity = '0.6';
         return;
     }
 
-    // Mostrar nombre del archivo
+    // Mostrar nombre del archivo inmediatamente
     labelFile.innerHTML = file.name;
+    labelFile.style.color = '';
 
-    // Validar
+    // Validar si es imagen
     if (isValidImage(file)) {
+        // Válido → habilitar botón
         btnSubir.disabled = false;
         btnSubir.style.opacity = '1';
-        labelFile.style.color = ''; // color normal
     } else {
+        // Inválido → deshabilitar, advertir y limpiar
         btnSubir.disabled = true;
         btnSubir.style.opacity = '0.6';
-        labelFile.innerHTML = `⚠️ ${file.name} (no es imagen válida)`;
+        labelFile.innerHTML = `Error ${file.name} (no es imagen)`;
         labelFile.style.color = 'red';
 
-        // Opcional: alerta o tooltip más visible
-        alert('Solo se permiten archivos de imagen (.jpg, .png, .gif, .webp, etc.)');
-        
-        // Limpiar input para que no quede archivo inválido seleccionado
+        alert('Solo se permiten imágenes (.jpg, .png, .gif, .webp, etc.)');
+
+        // Limpiar selección
         inputFile.value = '';
-        labelFile.innerHTML = 'Agregar Imagen';
-        labelFile.style.color = '';
+        setTimeout(() => {
+            labelFile.innerHTML = 'Agregar Imagen';
+            labelFile.style.color = '';
+        }, 2000); // vuelve al texto original después de 2 segundos
     }
 });
 
-// Mantener el código del botón eliminar (sin cambios)
+// El resto del código (botón eliminar) se mantiene igual
 document.getElementById('btnEliminarImagenes').addEventListener('click', function () {
     if (!confirm('¿Seguro que deseas eliminar todas las imágenes?')) {
         return;
