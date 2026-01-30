@@ -156,7 +156,7 @@ document.getElementById('btnEliminarImagenes').addEventListener('click', functio
     if (!confirm('¿Seguro que deseas eliminar todas las imágenes?')) {
         return;
     }
-    fetch('<?= $this->url('application', ['action' => 'eliminar-imagenes']) ?>', {
+    fetch('<?= $this->url('application', ['action' => 'eliminarImagenes']) ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
