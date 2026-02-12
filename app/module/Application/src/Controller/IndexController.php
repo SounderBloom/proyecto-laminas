@@ -219,7 +219,7 @@ class IndexController extends AbstractActionController
         return $this->getResponse();
     }
 
-    public function crudSegundaEvaluacion(){
+    public function crudSegundaEvaluacionAction(){
         return new ViewModel();
     }
 }
