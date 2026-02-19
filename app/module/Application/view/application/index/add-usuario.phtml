@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         nacimiento: document.getElementById('nacimiento').value
       };
 
-      fetch('<?= $this->url('application', ['action' => 'addUsuarioBd']) ?>', {
+      fetch("<?= $this->url('application', ['action' => 'addUsuarioBd']) ?>", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
