@@ -220,6 +220,41 @@ class IndexController extends AbstractActionController
     }
 
     public function crudSegundaEvaluacionAction(){
+        $sql = new Sql($this->db);
+
+        $select = $sql->select('usuarios');
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        return new ViewModel([
+            'usuarios' => $result,
+        ]);
+    }
+
+    public function addUsuarioBdAction($usuario){
+        $sql = new Sql($this->db);
+
+        $insert = $sql->insert('usuarios');
+        $insert->values([
+            'nombre' => $usuario.nombre,
+            'apellido_mat' => $usuario.apellido_mat,
+            'apellido_pat' => $usuario.apellido_pat,
+            'correo' => $usuario.correo,
+            'nacimiento' => $usuario.nacimiento,
+            'telefono' => $usuario.telefono
+        ]);
+
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $stmt->execute();
+
+        return new JsonModel([
+            'success' => true,
+            'message' => 'Todas las imágenes fueron eliminadas',
+            'code' => 200
+        ]);
+    }
+
+    public function addUsuarioAction($usuario){
         return new ViewModel();
     }
 }
