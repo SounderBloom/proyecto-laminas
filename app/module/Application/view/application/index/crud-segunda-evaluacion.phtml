@@ -21,7 +21,7 @@
   </div>
 
   <div class="container">
-    <a href="<?= $this->url('application', ['action' => 'addUsuarioAction']) ?>" class="btn btn-dark">
+    <a href="<?= $this->url('application', ['action' => 'addUsuario']) ?>" class="btn btn-dark">
       Agregar Nuevo Usuario
     </a>
 
@@ -39,7 +39,7 @@
       <tbody>
         <?php if (count($usuarios) === 0): ?>
           <tr>
-            <td colspan="4" class="text-center">No hay registros</td>
+            <td colspan="6" class="text-center">No hay registros</td>
           </tr>
         <?php else: ?>
           <?php foreach ($usuarios as $usuario): ?>
