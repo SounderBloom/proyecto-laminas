@@ -231,28 +231,59 @@ class IndexController extends AbstractActionController
         ]);
     }
 
-    public function addUsuarioBdAction($usuario){
-        $sql = new Sql($this->db);
-
-        $insert = $sql->insert('usuarios');
-        $insert->values([
-            'nombre' => $usuario.nombre,
-            'apellido_mat' => $usuario.apellido_mat,
-            'apellido_pat' => $usuario.apellido_pat,
-            'correo' => $usuario.correo,
-            'nacimiento' => $usuario.nacimiento,
-            'telefono' => $usuario.telefono
-        ]);
-
-        $stmt = $sql->prepareStatementForSqlObject($insert);
-        $stmt->execute();
-
+    public function addUsuarioBdAction()
+{
+    $request = $this->getRequest();
+    if (!$request->isPost()) {
         return new JsonModel([
-            'success' => true,
-            'message' => 'Todas las imágenes fueron eliminadas',
-            'code' => 200
+            'success' => false,
+            'message' => 'Método no permitido',
+            'code' => 405
         ]);
     }
+
+    $content = $request->getContent();
+    $usuario = json_decode($content, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return new JsonModel([
+            'success' => false,
+            'message' => 'JSON inválido: ' . json_last_error_msg(),
+            'code' => 400
+        ]);
+    }
+
+    // Validar que todos los campos existan
+    $requiredFields = ['nombre', 'apellido_pat', 'apellido_mat', 'telefono', 'correo', 'nacimiento'];
+    foreach ($requiredFields as $field) {
+        if (!isset($usuario[$field])) {
+            return new JsonModel([
+                'success' => false,
+                'message' => "Falta el campo: $field",
+                'code' => 400
+            ]);
+        }
+    }
+
+    $sql = new Sql($this->db);
+    $insert = $sql->insert('usuarios');
+    $insert->values([
+        'nombre' => $usuario['nombre'],
+        'apellido_pat' => $usuario['apellido_pat'],
+        'apellido_mat' => $usuario['apellido_mat'],
+        'correo' => $usuario['correo'],
+        'nacimiento' => $usuario['nacimiento'],
+        'telefono' => $usuario['telefono']
+    ]);
+    $stmt = $sql->prepareStatementForSqlObject($insert);
+    $stmt->execute();
+
+    return new JsonModel([
+        'success' => true,
+        'message' => 'Usuario agregado exitosamente',
+        'code' => 200
+    ]);
+}
 
     public function addUsuarioAction(){
         return new ViewModel();
