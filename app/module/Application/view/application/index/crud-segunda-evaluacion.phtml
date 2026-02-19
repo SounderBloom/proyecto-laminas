@@ -4,56 +4,158 @@
  * @var Laminas\Db\ResultSet\ResultSetInterface $usuarios
  */
 ?>
-
 <div class="container" style="height: 100vh; background-color: rgb(240,240,240)">
+<nav aria-label="breadcrumb mt-5">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
+<li class="breadcrumb-item active" aria-current="page">Crud Segunda Evaluación</li>
+</ol>
+</nav>
 
-    <nav aria-label="breadcrumb mt-5">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Crud Segunda Evaluación</li>
-        </ol>
-    </nav>
+<div class="ms-5 ps-5 pe-5 pb-5 pt-2 d-flex align-items-center">
+<a href="<?= $this->url('application', ['action' => 'index']) ?>" class="btn btn-dark p-2 me-3"><-</a>
+<span class="title text-center fs-2">Crud Segunda Evaluación</span>
+</div>
 
+<div class="container">
+<a href="<?= $this->url('application', ['action' => 'addUsuario']) ?>" class="btn btn-dark mb-3">
+  <i class="bi bi-plus-lg"></i> Agregar Nuevo Usuario
+</a>
 
-  <div class="ms-5 ps-5 pe-5 pb-5 pt-2">
-    <a href="<?= $this->url('application', ['action' => 'index']) ?>" class="btn btn-dark p-2"><-</a>
-    <span class="title mt-5 text-center fs-2 ms-3">Crud Segunda Evaluación</span>
+<table class="table table-striped table-bordered bg-white table-hover">
+<thead class="table-dark">
+<tr>
+<th>Nombre</th>
+<th>Apellido Paterno</th>
+<th>Apellido Materno</th>
+<th>Teléfono</th>
+<th>Correo</th>
+<th>Nacimiento</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
+<?php if (count($usuarios) === 0): ?>
+<tr>
+<td colspan="7" class="text-center py-4">No hay registros</td>
+</tr>
+<?php else: ?>
+<?php foreach ($usuarios as $usuario): ?>
+<tr data-id="<?= $usuario['Id'] ?>">
+<td><?= $this->escapeHtml($usuario['nombre']) ?></td>
+<td><?= $this->escapeHtml($usuario['apellido_pat']) ?></td>
+<td><?= $this->escapeHtml($usuario['apellido_mat']) ?></td>
+<td><?= $this->escapeHtml($usuario['telefono']) ?></td>
+<td><?= $this->escapeHtml($usuario['correo']) ?></td>
+<td><?= $this->escapeHtml($usuario['nacimiento']) ?></td>
+<td>
+  <button class="btn btn-sm btn-warning btn-edit" 
+          data-id="<?= $usuario['Id'] ?>"
+          title="Editar">
+    <i class="bi bi-pencil"></i> Editar
+  </button>
+  <button class="btn btn-sm btn-danger btn-delete ms-1" 
+          data-id="<?= $usuario['Id'] ?>"
+          data-nombre="<?= $this->escapeHtml($usuario['nombre'] . ' ' . $usuario['apellido_pat']) ?>"
+          title="Eliminar">
+    <i class="bi bi-trash"></i> Eliminar
+  </button>
+</td>
+</tr>
+<?php endforeach; ?>
+<?php endif; ?>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Modal de confirmación de eliminación (Bootstrap) -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
-
-  <div class="container">
-    <a href="<?= $this->url('application', ['action' => 'addUsuario']) ?>" class="btn btn-dark">
-      Agregar Nuevo Usuario
-    </a>
-
-    <table class="table table-striped table-bordered bg-white">
-      <thead class="table-dark">
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido Paterno</th>
-          <th>Apellido Materno</th>
-          <th>Telefono</th>
-          <th>Correo</th>
-          <th>Nacimiento</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if (count($usuarios) === 0): ?>
-          <tr>
-            <td colspan="6" class="text-center">No hay registros</td>
-          </tr>
-        <?php else: ?>
-          <?php foreach ($usuarios as $usuario): ?>
-            <tr>
-              <td><?= $usuario['nombre'] ?></td>
-              <td><?= $usuario['apellido_pat'] ?></td>
-              <td><?= $usuario['apellido_mat'] ?></td>
-              <td><?= $usuario['telefono'] ?></td>
-              <td><?= $usuario['correo'] ?></td>
-              <td><?= $usuario['nacimiento'] ?></td>
-            </tr>
-          <?php endforeach; ?>
-        <?php endif; ?>
-      </tbody>
-    </table>
+  <div class="modal-body">
+    ¿Realmente deseas eliminar al usuario <strong id="usuarioNombre"></strong>?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
   </div>
 </div>
+</div>
+</div>
+
+<script>
+// Necesitas incluir Bootstrap JS e icons (si no están ya en tu layout)
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let usuarioIdToDelete = null;
+
+  // Botón Eliminar
+  document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', function () {
+      usuarioIdToDelete = this.getAttribute('data-id');
+      const nombre = this.getAttribute('data-nombre');
+
+      document.getElementById('usuarioNombre').textContent = nombre;
+      const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      modal.show();
+    });
+  });
+
+  // Confirmar eliminación
+  document.getElementById('confirmDelete').addEventListener('click', function () {
+    if (!usuarioIdToDelete) return;
+
+    fetch("<?= $this->url('application', ['action' => 'deleteUsuario']) ?>", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ id: usuarioIdToDelete })
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(text => { throw new Error(text || 'Error ' + response.status); });
+      }
+      return response.json();
+    })
+    .then(result => {
+      if (result.success) {
+        // Remover la fila de la tabla sin recargar
+        const row = document.querySelector(`tr[data-id="${usuarioIdToDelete}"]`);
+        if (row) row.remove();
+
+        // Opcional: mostrar mensaje de éxito
+        alert(result.message || 'Usuario eliminado correctamente');
+      } else {
+        alert('Error: ' + (result.message || 'No se pudo eliminar el usuario'));
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error al eliminar: ' + error.message);
+    })
+    .finally(() => {
+      // Cerrar modal
+      bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+      usuarioIdToDelete = null;
+    });
+  });
+
+  // Botón Editar (por ahora solo alerta - puedes implementarlo después)
+  document.querySelectorAll('.btn-edit').forEach(button => {
+    button.addEventListener('click', function () {
+      const id = this.getAttribute('data-id');
+      alert('Funcionalidad de edición para ID: ' + id + '\n(Implementar redirección o modal de edición)');
+      // Ejemplo: window.location.href = "<?= $this->url('application', ['action' => 'editUsuario']) ?>?id=" + id;
+    });
+  });
+});
+</script>

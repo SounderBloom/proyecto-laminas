@@ -293,6 +293,62 @@ public function addUsuarioBdAction()
     }
 }
 
+
+public function deleteUsuarioAction()
+{
+    $request = $this->getRequest();
+    
+    if (!$request->isPost()) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'Método no permitido',
+            'code' => 405
+        ]);
+    }
+
+    $content = $request->getContent();
+    $data = json_decode($content, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE || !isset($data['id']) || !is_numeric($data['id'])) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'ID de usuario inválido',
+            'code' => 400
+        ]);
+    }
+
+    $id = (int) $data['id'];
+
+    try {
+        $sql = new Sql($this->db);
+        $delete = $sql->delete('usuarios');
+        $delete->where(['Id' => $id]);
+        
+        $stmt = $sql->prepareStatementForSqlObject($delete);
+        $result = $stmt->execute();
+
+        if ($result->getAffectedRows() === 0) {
+            return new \Laminas\View\Model\JsonModel([
+                'success' => false,
+                'message' => 'No se encontró el usuario o ya fue eliminado',
+                'code' => 404
+            ]);
+        }
+
+        return new \Laminas\View\Model\JsonModel([
+            'success' => true,
+            'message' => 'Usuario eliminado correctamente',
+            'code' => 200
+        ]);
+    } catch (\Exception $e) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            'code' => 500
+        ]);
+    }
+}
+
     public function addUsuarioAction(){
         return new ViewModel();
     }
