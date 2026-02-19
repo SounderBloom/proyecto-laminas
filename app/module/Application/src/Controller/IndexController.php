@@ -254,7 +254,7 @@ class IndexController extends AbstractActionController
         ]);
     }
 
-    public function addUsuarioAction($usuario){
+    public function addUsuarioAction(){
         return new ViewModel();
     }
 }
