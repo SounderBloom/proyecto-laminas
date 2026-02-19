@@ -41,7 +41,7 @@
 </tr>
 <?php else: ?>
 <?php foreach ($usuarios as $usuario): ?>
-<tr data-id="<?= $usuario['Id'] ?>">
+<tr data-id="<?= $usuario['id'] ?>">
 <td><?= $this->escapeHtml($usuario['nombre']) ?></td>
 <td><?= $this->escapeHtml($usuario['apellido_pat']) ?></td>
 <td><?= $this->escapeHtml($usuario['apellido_mat']) ?></td>
@@ -50,12 +50,12 @@
 <td><?= $this->escapeHtml($usuario['nacimiento']) ?></td>
 <td>
   <button class="btn btn-sm btn-warning btn-edit" 
-          data-id="<?= $usuario['Id'] ?>"
+          data-id="<?= $usuario['id'] ?>"
           title="Editar">
     <i class="bi bi-pencil"></i> Editar
   </button>
   <button class="btn btn-sm btn-danger btn-delete ms-1" 
-          data-id="<?= $usuario['Id'] ?>"
+          data-id="<?= $usuario['id'] ?>"
           data-nombre="<?= $this->escapeHtml($usuario['nombre'] . ' ' . $usuario['apellido_pat']) ?>"
           title="Eliminar">
     <i class="bi bi-trash"></i> Eliminar
