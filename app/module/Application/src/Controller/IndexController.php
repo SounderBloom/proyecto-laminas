@@ -265,24 +265,32 @@ public function addUsuarioBdAction()
         }
     }
 
-    $sql = new Sql($this->db);
-    $insert = $sql->insert('usuarios');
-    $insert->values([
-        'nombre' => $usuario['nombre'],
-        'apellido_pat' => $usuario['apellido_pat'],
-        'apellido_mat' => $usuario['apellido_mat'],
-        'correo' => $usuario['correo'],
-        'nacimiento' => $usuario['nacimiento'],
-        'telefono' => $usuario['telefono']
-    ]);
-    $stmt = $sql->prepareStatementForSqlObject($insert);
-    $stmt->execute();
+    try {
+        $sql = new Sql($this->db);
+        $insert = $sql->insert('usuarios');
+        $insert->values([
+            'nombre' => $usuario['nombre'],
+            'apellido_pat' => $usuario['apellido_pat'],
+            'apellido_mat' => $usuario['apellido_mat'],
+            'correo' => $usuario['correo'],
+            'nacimiento' => $usuario['nacimiento'],
+            'telefono' => $usuario['telefono']
+        ]);
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $stmt->execute();
 
-    return new \Laminas\View\Model\JsonModel([
-        'success' => true,
-        'message' => 'Usuario agregado exitosamente',
-        'code' => 200
-    ]);
+        return new \Laminas\View\Model\JsonModel([
+            'success' => true,
+            'message' => 'Usuario agregado exitosamente',
+            'code' => 200
+        ]);
+    } catch (\Exception $e) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            'code' => 500
+        ]);
+    }
 }
 
     public function addUsuarioAction(){
