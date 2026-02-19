@@ -231,11 +231,11 @@ class IndexController extends AbstractActionController
         ]);
     }
 
-    public function addUsuarioBdAction()
+public function addUsuarioBdAction()
 {
     $request = $this->getRequest();
     if (!$request->isPost()) {
-        return new JsonModel([
+        return new \Laminas\View\Model\JsonModel([
             'success' => false,
             'message' => 'Método no permitido',
             'code' => 405
@@ -246,7 +246,7 @@ class IndexController extends AbstractActionController
     $usuario = json_decode($content, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
-        return new JsonModel([
+        return new \Laminas\View\Model\JsonModel([
             'success' => false,
             'message' => 'JSON inválido: ' . json_last_error_msg(),
             'code' => 400
@@ -257,7 +257,7 @@ class IndexController extends AbstractActionController
     $requiredFields = ['nombre', 'apellido_pat', 'apellido_mat', 'telefono', 'correo', 'nacimiento'];
     foreach ($requiredFields as $field) {
         if (!isset($usuario[$field])) {
-            return new JsonModel([
+            return new \Laminas\View\Model\JsonModel([
                 'success' => false,
                 'message' => "Falta el campo: $field",
                 'code' => 400
@@ -278,7 +278,7 @@ class IndexController extends AbstractActionController
     $stmt = $sql->prepareStatementForSqlObject($insert);
     $stmt->execute();
 
-    return new JsonModel([
+    return new \Laminas\View\Model\JsonModel([
         'success' => true,
         'message' => 'Usuario agregado exitosamente',
         'code' => 200
