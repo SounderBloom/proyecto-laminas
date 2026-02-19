@@ -322,7 +322,7 @@ public function deleteUsuarioAction()
     try {
         $sql = new Sql($this->db);
         $delete = $sql->delete('usuarios');
-        $delete->where(['Id' => $id]);
+        $delete->where(['id' => $id]);
         
         $stmt = $sql->prepareStatementForSqlObject($delete);
         $result = $stmt->execute();
