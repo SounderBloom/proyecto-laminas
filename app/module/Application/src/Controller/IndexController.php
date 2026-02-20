@@ -382,6 +382,90 @@ public function editUsuarioAction()
 }
 
 
+
+public function updateUsuarioAction()
+{
+    $request = $this->getRequest();
+    
+    if (!$request->isPost()) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'Método no permitido',
+            'code' => 405
+        ]);
+    }
+
+    $content = $request->getContent();
+    $usuario = json_decode($content, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'JSON inválido: ' . json_last_error_msg(),
+            'code' => 400
+        ]);
+    }
+
+    // Validar que todos los campos existan, incluyendo id
+    $requiredFields = ['id', 'nombre', 'apellido_pat', 'apellido_mat', 'telefono', 'correo', 'nacimiento'];
+    foreach ($requiredFields as $field) {
+        if (!isset($usuario[$field])) {
+            return new \Laminas\View\Model\JsonModel([
+                'success' => false,
+                'message' => "Falta el campo: $field",
+                'code' => 400
+            ]);
+        }
+    }
+
+    $id = (int) $usuario['id'];
+    if ($id <= 0) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'ID inválido',
+            'code' => 400
+        ]);
+    }
+
+    try {
+        $sql = new Sql($this->db);
+        $update = $sql->update('usuarios');
+        $update->set([
+            'nombre' => $usuario['nombre'],
+            'apellido_pat' => $usuario['apellido_pat'],
+            'apellido_mat' => $usuario['apellido_mat'],
+            'correo' => $usuario['correo'],
+            'nacimiento' => $usuario['nacimiento'],
+            'telefono' => $usuario['telefono']
+        ]);
+        $update->where(['id' => $id]);
+        
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $result = $stmt->execute();
+
+        if ($result->getAffectedRows() === 0) {
+            return new \Laminas\View\Model\JsonModel([
+                'success' => false,
+                'message' => 'No se encontró el usuario o no hubo cambios',
+                'code' => 404
+            ]);
+        }
+
+        return new \Laminas\View\Model\JsonModel([
+            'success' => true,
+            'message' => 'Usuario actualizado exitosamente',
+            'code' => 200
+        ]);
+    } catch (\Exception $e) {
+        return new \Laminas\View\Model\JsonModel([
+            'success' => false,
+            'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            'code' => 500
+        ]);
+    }
+}
+
+
     public function addUsuarioAction(){
         return new ViewModel();
     }

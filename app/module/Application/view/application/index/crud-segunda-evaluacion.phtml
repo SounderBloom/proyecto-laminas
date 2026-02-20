@@ -152,13 +152,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Botón Editar (por ahora solo alerta - puedes implementarlo después)
-  document.querySelectorAll('.btn-edit').forEach(button => {
-    button.addEventListener('click', function () {
-      const id = this.getAttribute('data-id');
-      alert('Funcionalidad de edición para ID: ' + id + '\n(Implementar redirección o modal de edición)');
-      // Ejemplo: window.location.href = "<?= $this->url('application/default', ['action' => 'editUsuario']) ?>?id=" + id;
-    });
-  });
 });
 </script>

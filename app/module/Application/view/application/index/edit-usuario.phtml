@@ -6,89 +6,153 @@
 ?>
 <div class="container" style="height: 100vh; background-color: rgb(240,240,240)">
 <nav aria-label="breadcrumb mt-5">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'index']) ?>">Inicio</a></li>
-        <li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Editar Usuario</li>
-    </ol>
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'index']) ?>">Inicio</a></li>
+<li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
+<li class="breadcrumb-item active" aria-current="page">Editar Usuario</li>
+</ol>
 </nav>
-
 <div class="ms-5 ps-5 pe-5 pb-5 pt-2">
-    <a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-dark p-2"><-</a>
-    <span class="title mt-5 text-center fs-2 ms-3">Editar Usuario</span>
+<a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-dark p-2"><-</a>
+<span class="title mt-5 text-center fs-2 ms-3">Editar Usuario</span>
 </div>
-
 <div class="container">
-    <form id="editUserForm" class="needs-validation" novalidate>
-        <input type="hidden" name="id" value="<?= $this->escapeHtml($usuario['id']) ?>">
-
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" 
-                   value="<?= $this->escapeHtml($usuario['nombre']) ?>" required oninput="validateLetters(this)">
-            <div class="invalid-feedback">Por favor, ingresa un nombre válido (solo letras).</div>
-        </div>
-
-        <div class="mb-3">
-            <label for="apellido_pat" class="form-label">Apellido Paterno</label>
-            <input type="text" class="form-control" id="apellido_pat" name="apellido_pat" 
-                   value="<?= $this->escapeHtml($usuario['apellido_pat']) ?>" required oninput="validateLetters(this)">
-            <div class="invalid-feedback">Por favor, ingresa un apellido paterno válido (solo letras).</div>
-        </div>
-
-        <div class="mb-3">
-            <label for="apellido_mat" class="form-label">Apellido Materno</label>
-            <input type="text" class="form-control" id="apellido_mat" name="apellido_mat" 
-                   value="<?= $this->escapeHtml($usuario['apellido_mat']) ?>" required oninput="validateLetters(this)">
-            <div class="invalid-feedback">Por favor, ingresa un apellido materno válido (solo letras).</div>
-        </div>
-
-        <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="tel" class="form-control" id="telefono" name="telefono" maxlength="10" 
-                   value="<?= $this->escapeHtml($usuario['telefono']) ?>" required oninput="validateDigits(this)">
-            <div class="invalid-feedback">Por favor, ingresa un teléfono válido (máximo 10 dígitos).</div>
-        </div>
-
-        <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" class="form-control" id="correo" name="correo" 
-                   value="<?= $this->escapeHtml($usuario['correo']) ?>" required>
-            <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
-        </div>
-
-        <div class="mb-3">
-            <label for="nacimiento" class="form-label">Nacimiento</label>
-            <input type="date" class="form-control" id="nacimiento" name="nacimiento" 
-                   value="<?= $this->escapeHtml($usuario['nacimiento']) ?>" required>
-            <div class="invalid-feedback">Por favor, selecciona una fecha de nacimiento válida (no anterior a 100 años).</div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="submitBtn">Guardar Cambios</button>
-        <a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-secondary ms-2">Cancelar</a>
-    </form>
+<form id="editUserForm" class="needs-validation" novalidate>
+<input type="hidden" id="id" name="id" value="<?= $this->escapeHtml($usuario['id']) ?>">
+<div class="mb-3">
+<label for="nombre" class="form-label">Nombre</label>
+<input type="text" class="form-control" id="nombre" name="nombre"
+value="<?= $this->escapeHtml($usuario['nombre']) ?>" required oninput="validateLetters(this)">
+<div class="invalid-feedback">Por favor, ingresa un nombre válido (solo letras).</div>
+</div>
+<div class="mb-3">
+<label for="apellido_pat" class="form-label">Apellido Paterno</label>
+<input type="text" class="form-control" id="apellido_pat" name="apellido_pat"
+value="<?= $this->escapeHtml($usuario['apellido_pat']) ?>" required oninput="validateLetters(this)">
+<div class="invalid-feedback">Por favor, ingresa un apellido paterno válido (solo letras).</div>
+</div>
+<div class="mb-3">
+<label for="apellido_mat" class="form-label">Apellido Materno</label>
+<input type="text" class="form-control" id="apellido_mat" name="apellido_mat"
+value="<?= $this->escapeHtml($usuario['apellido_mat']) ?>" required oninput="validateLetters(this)">
+<div class="invalid-feedback">Por favor, ingresa un apellido materno válido (solo letras).</div>
+</div>
+<div class="mb-3">
+<label for="telefono" class="form-label">Teléfono</label>
+<input type="tel" class="form-control" id="telefono" name="telefono" maxlength="10"
+value="<?= $this->escapeHtml($usuario['telefono']) ?>" required oninput="validateDigits(this)">
+<div class="invalid-feedback">Por favor, ingresa un teléfono válido (máximo 10 dígitos).</div>
+</div>
+<div class="mb-3">
+<label for="correo" class="form-label">Correo</label>
+<input type="email" class="form-control" id="correo" name="correo"
+value="<?= $this->escapeHtml($usuario['correo']) ?>" required>
+<div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
+</div>
+<div class="mb-3">
+<label for="nacimiento" class="form-label">Nacimiento</label>
+<input type="date" class="form-control" id="nacimiento" name="nacimiento"
+value="<?= $this->escapeHtml($usuario['nacimiento']) ?>" required>
+<div class="invalid-feedback">Por favor, selecciona una fecha de nacimiento válida (no anterior a 100 años).</div>
+</div>
+<button type="submit" class="btn btn-primary" id="submitBtn">Guardar Cambios</button>
+<a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
 </div>
 </div>
 
-<!-- Reutilizamos las mismas funciones de validación que en agregar -->
 <script>
-// ... copia aquí las funciones validateLetters() y validateDigits() ...
+function validateLetters(input) {
+  input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+}
+
+function validateDigits(input) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
-    const nacimientoInput = document.getElementById('nacimiento');
-    const today = new Date();
-    const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
-    nacimientoInput.min = minDate.toISOString().split('T')[0];
-    nacimientoInput.max = today.toISOString().split('T')[0];
+  const nacimientoInput = document.getElementById('nacimiento');
+  const today = new Date();
+  const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+  const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  nacimientoInput.min = minDate.toISOString().split('T')[0];
+  nacimientoInput.max = maxDate.toISOString().split('T')[0];
 
-    const form = document.getElementById('editUserForm');
-    const submitBtn = document.getElementById('submitBtn');
+  const form = document.getElementById('editUserForm');
+  const submitBtn = document.getElementById('submitBtn');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        // ... aquí iría la lógica de validación similar a la de agregar ...
-        // y luego un fetch a la ruta de actualización (por ejemplo: /application/update-usuario)
-        // con método PUT o POST, enviando también el id
-    });
+    let isValid = true;
+
+    // Bootstrap validation
+    if (!form.checkValidity()) {
+      isValid = false;
+    }
+    form.classList.add('was-validated');
+
+    // Regex validation
+    const correo = document.getElementById('correo').value;
+    const telefono = document.getElementById('telefono').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (!emailRegex.test(correo)) {
+      alert('El correo no tiene un formato válido.');
+      isValid = false;
+    }
+
+    if (!phoneRegex.test(telefono)) {
+      alert('El teléfono debe tener exactamente 10 dígitos.');
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Disable button and show loading
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...';
+
+      const data = {
+        id: document.getElementById('id').value,
+        nombre: document.getElementById('nombre').value,
+        apellido_pat: document.getElementById('apellido_pat').value,
+        apellido_mat: document.getElementById('apellido_mat').value,
+        telefono: telefono,
+        correo: correo,
+        nacimiento: document.getElementById('nacimiento').value
+      };
+
+      fetch("<?= $this->url('application/updateUsuario') ?>", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+      })
+      .then(result => {
+        if (result.success) {
+          window.location.href = "<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>";
+        } else {
+          alert('Error al actualizar el usuario: ' + (result.message || 'Desconocido'));
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Guardar Cambios';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error en la conexión: ' + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Guardar Cambios';
+      });
+    }
+  });
 });
 </script>

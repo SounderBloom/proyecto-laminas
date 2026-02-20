@@ -57,6 +57,15 @@ return [
                         ],
                     ],
                 ],
+                'updateUsuario' => [
+                    'type'    => Literal::class,
+                    'options' => [
+                        'route'    => '/update-usuario',
+                        'defaults' => [
+                            'action' => 'updateUsuario',
+                        ],
+                    ],
+                ],
             ],
         ],
     ],
