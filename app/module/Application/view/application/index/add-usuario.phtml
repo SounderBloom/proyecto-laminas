@@ -7,13 +7,13 @@
 <div class="container" style="height: 100vh; background-color: rgb(240,240,240)">
 <nav aria-label="breadcrumb mt-5">
 <ol class="breadcrumb">
-<li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
-<li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
+<li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'index']) ?>">Inicio</a></li>
+<li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
 <li class="breadcrumb-item active" aria-current="page">Nuevo Usuario</li>
 </ol>
 </nav>
 <div class="ms-5 ps-5 pe-5 pb-5 pt-2">
-<a href="<?= $this->url('application', ['action' => 'index']) ?>" class="btn btn-dark p-2"><-</a>
+<a href="<?= $this->url('application/default', ['action' => 'index']) ?>" class="btn btn-dark p-2"><-</a>
 <span class="title mt-5 text-center fs-2 ms-3">Agregar Nuevo Usuario</span>
 </div>
 <div class="container">
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         nacimiento: document.getElementById('nacimiento').value
       };
 
-      fetch("<?= $this->url('application', ['action' => 'addUsuarioBd']) ?>", {
+      fetch("<?= $this->url('application/default', ['action' => 'addUsuarioBd']) ?>", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(result => {
         if (result.success) {
-          window.location.href = "<?= $this->url('application', ['action' => 'crudSegundaEvaluacion']) ?>";
+          window.location.href = "<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>";
         } else {
           alert('Error al agregar el usuario: ' + (result.message || 'Desconocido'));
           submitBtn.disabled = false;

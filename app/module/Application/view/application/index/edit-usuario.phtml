@@ -7,14 +7,14 @@
 <div class="container" style="height: 100vh; background-color: rgb(240,240,240)">
 <nav aria-label="breadcrumb mt-5">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'index']) ?>">Inicio</a></li>
-        <li class="breadcrumb-item"><a href="<?= $this->url('application', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
+        <li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'index']) ?>">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>">Crud Segunda Evaluación</a></li>
         <li class="breadcrumb-item active" aria-current="page">Editar Usuario</li>
     </ol>
 </nav>
 
 <div class="ms-5 ps-5 pe-5 pb-5 pt-2">
-    <a href="<?= $this->url('application', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-dark p-2"><-</a>
+    <a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-dark p-2"><-</a>
     <span class="title mt-5 text-center fs-2 ms-3">Editar Usuario</span>
 </div>
 
@@ -65,7 +65,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary" id="submitBtn">Guardar Cambios</button>
-        <a href="<?= $this->url('application', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-secondary ms-2">Cancelar</a>
+        <a href="<?= $this->url('application/default', ['action' => 'crudSegundaEvaluacion']) ?>" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
 </div>
 </div>
