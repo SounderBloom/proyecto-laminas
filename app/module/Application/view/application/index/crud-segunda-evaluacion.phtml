@@ -49,9 +49,10 @@
 <td><?= $this->escapeHtml($usuario['correo']) ?></td>
 <td><?= $this->escapeHtml($usuario['nacimiento']) ?></td>
 <td>
-  <button class="btn btn-sm btn-warning btn-edit" 
+  
+<button class="btn btn-sm btn-warning btn-edit" 
         data-id="<?= $this->escapeHtml($usuario['id'] ?? '') ?>"
-        onclick="window.location.href='<?= $this->url('application/default', ['action' => 'editUsuario']) ?>/' + this.getAttribute('data-id')">
+        onclick="window.location.href='<?= $this->url('application/editUsuario', ['id' => '']) ?>' + this.getAttribute('data-id')">
     <i class="bi bi-pencil"></i> Editar
 </button>
 

@@ -23,7 +23,7 @@ return [
         ],
 
         'application' => [
-            'type'    => Literal::class,          // ← base fija
+            'type'    => Literal::class,          
             'options' => [
                 'route'    => '/application',
                 'defaults' => [
@@ -31,9 +31,9 @@ return [
                     'action'     => 'index',
                 ],
             ],
-            'may_terminate' => true,              // permite que termine aquí
-            'child_routes' => [                   // ← aquí agregamos las sub-rutas
-                'default' => [                    // para acciones sin parámetro
+            'may_terminate' => true,              
+            'child_routes' => [                   
+                'default' => [                    
                     'type'    => Segment::class,
                     'options' => [
                         'route'    => '[/:action]',
@@ -45,32 +45,23 @@ return [
                         ],
                     ],
                 ],
-                'editUsuario' => [                    // ruta específica para editar
+                'editUsuario' => [                    
                     'type'    => Segment::class,
                     'options' => [
                         'route'    => '/edit-usuario[/:id]',
                         'constraints' => [
-                            'id'     => '[0-9]+',     // solo números
-                            'action' => 'editUsuario',
+                            'id'     => '[0-9]+',     
                         ],
                         'defaults' => [
                             'action' => 'editUsuario',
                         ],
                     ],
                 ],
-                // Puedes agregar otras rutas con parámetros aquí en el futuro, ej:
-                // 'deleteUsuario' => [
-                //     'type'    => Segment::class,
-                //     'options' => [
-                //         'route'    => '/delete-usuario[/:id]',
-                //         'constraints' => ['id' => '[0-9]+'],
-                //         'defaults' => ['action' => 'deleteUsuario'],
-                //     ],
-                // ],
             ],
         ],
     ],
 ],
+
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Factory\IndexControllerFactory::class,
