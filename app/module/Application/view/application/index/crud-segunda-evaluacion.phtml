@@ -50,10 +50,12 @@
 <td><?= $this->escapeHtml($usuario['nacimiento']) ?></td>
 <td>
   <button class="btn btn-sm btn-warning btn-edit" 
-          data-id="<?= $usuario['id'] ?>"
-          title="Editar">
+        data-id="<?= $this->escapeHtml($usuario['id'] ?? '') ?>"
+        onclick="window.location.href='<?= $this->url('application', ['action' => 'editUsuario']) ?>/' + this.getAttribute('data-id')">
     <i class="bi bi-pencil"></i> Editar
-  </button>
+</button>
+
+
   <button class="btn btn-sm btn-danger btn-delete ms-1" 
           data-id="<?= $usuario['id'] ?>"
           data-nombre="<?= $this->escapeHtml($usuario['nombre'] . ' ' . $usuario['apellido_pat']) ?>"

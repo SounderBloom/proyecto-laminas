@@ -349,6 +349,39 @@ public function deleteUsuarioAction()
     }
 }
 
+
+public function editUsuarioAction()
+{
+    $id = (int) $this->params()->fromRoute('id', 0);
+    
+    if ($id <= 0) {
+        // Opcional: redirigir o mostrar error
+        return $this->redirect()->toRoute('application', ['action' => 'crudSegundaEvaluacion']);
+    }
+
+    $sql = new Sql($this->db);
+    $select = $sql->select('usuarios');
+    $select->where(['id' => $id]);
+    
+    $statement = $sql->prepareStatementForSqlObject($select);
+    $result = $statement->execute();
+    
+    $usuario = $result->current();
+    
+    if (!$usuario) {
+        // Usuario no encontrado
+        // Puedes agregar un mensaje flash o simplemente redirigir
+        return $this->redirect()->toRoute('application', ['action' => 'crudSegundaEvaluacion']);
+    }
+
+    // Retornamos la vista con los datos del usuario
+    return new ViewModel([
+        'usuario' => $usuario,
+        'id'      => $id
+    ]);
+}
+
+
     public function addUsuarioAction(){
         return new ViewModel();
     }

@@ -10,29 +10,67 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
-        'routes' => [
-            'home' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-            'application' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/application[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
+    'routes' => [
+        'home' => [
+            'type'    => Literal::class,
+            'options' => [
+                'route'    => '/',
+                'defaults' => [
+                    'controller' => Controller\IndexController::class,
+                    'action'     => 'index',
                 ],
             ],
         ],
+
+        'application' => [
+            'type'    => Literal::class,          // ← base fija
+            'options' => [
+                'route'    => '/application',
+                'defaults' => [
+                    'controller' => Controller\IndexController::class,
+                    'action'     => 'index',
+                ],
+            ],
+            'may_terminate' => true,              // permite que termine aquí
+            'child_routes' => [                   // ← aquí agregamos las sub-rutas
+                'default' => [                    // para acciones sin parámetro
+                    'type'    => Segment::class,
+                    'options' => [
+                        'route'    => '[/:action]',
+                        'constraints' => [
+                            'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ],
+                        'defaults' => [
+                            'action' => 'index',
+                        ],
+                    ],
+                ],
+                'editUsuario' => [                    // ruta específica para editar
+                    'type'    => Segment::class,
+                    'options' => [
+                        'route'    => '/edit-usuario[/:id]',
+                        'constraints' => [
+                            'id'     => '[0-9]+',     // solo números
+                            'action' => 'editUsuario',
+                        ],
+                        'defaults' => [
+                            'action' => 'editUsuario',
+                        ],
+                    ],
+                ],
+                // Puedes agregar otras rutas con parámetros aquí en el futuro, ej:
+                // 'deleteUsuario' => [
+                //     'type'    => Segment::class,
+                //     'options' => [
+                //         'route'    => '/delete-usuario[/:id]',
+                //         'constraints' => ['id' => '[0-9]+'],
+                //         'defaults' => ['action' => 'deleteUsuario'],
+                //     ],
+                // ],
+            ],
+        ],
     ],
+],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Factory\IndexControllerFactory::class,
