@@ -137,6 +137,13 @@ $buildUrl = function (int $page, string $search = ''): string {
     <nav aria-label="Paginación de usuarios">
         <ul class="pagination justify-content-center flex-wrap mt-2">
 
+            <!-- Primera -->
+            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                <a class="page-link" href="<?= $page > 1 ? $buildUrl(1, $search) : '#' ?>">
+                    |&laquo; Primera
+                </a>
+            </li>
+
             <!-- Anterior -->
             <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
                 <a class="page-link" href="<?= $page > 1 ? $buildUrl($page - 1, $search) : '#' ?>">
@@ -174,6 +181,13 @@ $buildUrl = function (int $page, string $search = ''): string {
             <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
                 <a class="page-link" href="<?= $page < $totalPages ? $buildUrl($page + 1, $search) : '#' ?>">
                     Siguiente &raquo;
+                </a>
+            </li>
+
+            <!-- Última -->
+            <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                <a class="page-link" href="<?= $page < $totalPages ? $buildUrl($totalPages, $search) : '#' ?>">
+                    Última &raquo;|
                 </a>
             </li>
 
