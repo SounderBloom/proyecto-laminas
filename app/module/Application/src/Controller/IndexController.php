@@ -219,15 +219,69 @@ class IndexController extends AbstractActionController
         return $this->getResponse();
     }
 
-    public function crudSegundaEvaluacionAction(){
+    public function crudSegundaEvaluacionAction()
+    {
+        // ── Parámetros de búsqueda y paginación ───────────────────────
+        $search  = trim((string) $this->params()->fromQuery('search', ''));
+        $page    = max(1, (int) $this->params()->fromQuery('page', 1));
+        $perPage = 5;
+        $offset  = ($page - 1) * $perPage;
+
         $sql = new Sql($this->db);
 
+        // ── Query de datos (con filtro + LIMIT/OFFSET) ─────────────────
         $select = $sql->select('usuarios');
-        $stmt = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
+
+        if ($search !== '') {
+            $like = '%' . $search . '%';
+            $select->where(function (\Laminas\Db\Sql\Where $where) use ($like) {
+                $where->nest()
+                    ->like('nombre',       $like)
+                    ->or->like('apellido_pat', $like)
+                    ->or->like('apellido_mat', $like)
+                    ->or->like('correo',       $like)
+                    ->or->like('telefono',     $like)
+                    ->unnest();
+            });
+        }
+
+        $select->limit($perPage)->offset($offset);
+        $stmt    = $sql->prepareStatementForSqlObject($select);
+        $result  = $stmt->execute();
+        $usuarios = iterator_to_array($result);
+
+        // ── Query de total (para calcular páginas) ─────────────────────
+        $countSelect = $sql->select('usuarios');
+        $countSelect->columns(['total' => new \Laminas\Db\Sql\Expression('COUNT(*)')]);
+
+        if ($search !== '') {
+            $like = '%' . $search . '%';
+            $countSelect->where(function (\Laminas\Db\Sql\Where $where) use ($like) {
+                $where->nest()
+                    ->like('nombre',       $like)
+                    ->or->like('apellido_pat', $like)
+                    ->or->like('apellido_mat', $like)
+                    ->or->like('correo',       $like)
+                    ->or->like('telefono',     $like)
+                    ->unnest();
+            });
+        }
+
+        $countStmt   = $sql->prepareStatementForSqlObject($countSelect);
+        $countResult = $countStmt->execute()->current();
+        $total       = (int) ($countResult['total'] ?? 0);
+        $totalPages  = max(1, (int) ceil($total / $perPage));
+
+        // Corregir página si excede el total
+        $page = min($page, $totalPages);
 
         return new ViewModel([
-            'usuarios' => $result,
+            'usuarios'   => $usuarios,
+            'search'     => $search,
+            'page'       => $page,
+            'perPage'    => $perPage,
+            'total'      => $total,
+            'totalPages' => $totalPages,
         ]);
     }
 
